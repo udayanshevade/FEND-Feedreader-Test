@@ -33,6 +33,16 @@ function checkName(element, index, array) {
     return (typeof element['name'] === 'string' && element != '');
 }
 
+// returns status of menu visibility
+function checkMenuVisibility(classStatus) {
+    if (classStatus === true) {
+        return 'open';
+    }
+    else {
+        return 'closed';
+    }
+}
+
 /* This function starts up our application. The Google Feed
  * Reader API is loaded asynchonously and will then call this
  * function when the API is loaded.
