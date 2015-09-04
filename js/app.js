@@ -23,6 +23,16 @@ var allFeeds = [
     }
 ];
 
+// checks every url element in allFeeds to see if it has a url
+function checkURL(element, index, array) {
+    return (typeof element['url'] === 'string' && element != '');
+}
+
+// checks every name element in allFeeds to see if it has a name
+function checkName(element, index, array) {
+    return (typeof element['name'] === 'string' && element != '');
+}
+
 /* This function starts up our application. The Google Feed
  * Reader API is loaded asynchonously and will then call this
  * function when the API is loaded.
