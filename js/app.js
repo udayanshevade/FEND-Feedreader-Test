@@ -82,6 +82,8 @@ function loadFeed(id, cb) {
         feedName = allFeeds[id].name,
         feed = new google.feeds.Feed(feedUrl);
 
+    clearInterval(inactivity);
+
     /* Load the feed using the Google Feed Reader API.
      * Once the feed has been loaded, the callback function
      * is executed.
@@ -98,7 +100,6 @@ function loadFeed(id, cb) {
                 entriesLen = entries.length,
                 entryTemplate = Handlebars.compile($('.tpl-entry').html());
 
-            clearInterval(inactivity);
             title.html(feedName);   // Set the header text
             container.empty();      // Empty out all previous entries
 

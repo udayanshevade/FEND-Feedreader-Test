@@ -148,8 +148,10 @@ $(function() {
     // new test suite to describe what inactivity does
     describe('Inactivity', function() {
         var specFeedreader,
-            specInactivity;
+            specInactivity,
+            $menuIcon = $('.menu-icon-link');
 
+        // sets up shared functionality between tests
         beforeEach(function() {
             // creates spy to track Feedreader.prototype.cycleFeeds
             spyOn(Feedreader.prototype, 'cycleFeeds');
@@ -161,6 +163,7 @@ $(function() {
             specInactivity = setInterval(specFeedreader.cycleFeeds, 15000);
         });
 
+        // restores functionality
         afterEach(function() {
             // restores original timer functions
             jasmine.clock().uninstall();
@@ -168,9 +171,30 @@ $(function() {
             clearInterval(specInactivity);
         });
 
-        it('causes cycles to feed periodically', function(){
+        // tests whether cycleFeeds gets called according to interval
+        it('causes feeds to cycle periodically', function(){
+            // just before 3 intervals
             jasmine.clock().tick(40000);
+            // callback count should be 2
             expect(specFeedreader.cycleFeeds.calls.count()).toEqual(2);
+        });
+
+        // tests whether interval is reset when active
+        it('resets due to activity', function() {
+            // forward mock clock to just before callback
+            jasmine.clock().tick(14000);
+            // simulates menu click
+            $menuIcon.click();
+            // clears mock interval
+            clearInterval(specInactivity);
+            // restarts it as per the loadFeed function
+            specInactivity = setInterval(specFeedreader.cycleFeeds, 15000);
+            // forwards clock past original time of callback
+            jasmine.clock().tick(8000);
+            // callback should not have occurred
+            expect(specFeedreader.cycleFeeds.calls.any()).toBe(false);
+            // restore menu
+            $menuIcon.click();
         });
     });
 
