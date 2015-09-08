@@ -66,6 +66,7 @@ Feedreader.prototype.cycleFeeds = function() {
 function init() {
     // Load the first feed we've defined (index of 0).
     loadFeed(0);
+    var inactivity = setInterval(feedreader.cycleFeeds, 20000);
 }
 
 /* This function performs everything necessary to load a
@@ -116,6 +117,7 @@ function loadFeed(id, cb) {
     });
 }
 
+var feedreader = new Feedreader();
 /* Google API: Loads the Feed Reader API and defines what function
  * to call when the Feed Reader API is done loading.
  */
