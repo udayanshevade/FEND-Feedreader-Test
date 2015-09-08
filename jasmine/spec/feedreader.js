@@ -156,19 +156,19 @@ $(function() {
             jasmine.clock().install();
             // defines new interval
             specInactivity = setInterval(specFeedreader.cycleFeeds, 15000);
-        })
+        });
 
         afterEach(function() {
             // restores original timer functions
             jasmine.clock().uninstall();
             // clears interval
             clearInterval(specInactivity);
-        })
+        });
 
         it('causes cycles to feed periodically', function(){
             jasmine.clock().tick(40000);
             expect(specFeedreader.cycleFeeds.calls.count()).toEqual(2);
         });
-    })
+    });
 
 }());
