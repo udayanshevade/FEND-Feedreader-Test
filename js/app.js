@@ -7,7 +7,8 @@
  */
 
 // The names and URLs to all of the feeds we'd like available.
-var currentID = 0,
+var inactivity,
+    currentID = 0,
     allFeeds = [
     {
         name: 'Udacity Blog',
@@ -66,7 +67,6 @@ Feedreader.prototype.cycleFeeds = function() {
 function init() {
     // Load the first feed we've defined (index of 0).
     loadFeed(0);
-    var inactivity = setInterval(feedreader.cycleFeeds, 20000);
 }
 
 /* This function performs everything necessary to load a
@@ -98,6 +98,7 @@ function loadFeed(id, cb) {
                 entriesLen = entries.length,
                 entryTemplate = Handlebars.compile($('.tpl-entry').html());
 
+            clearInterval(inactivity);
             title.html(feedName);   // Set the header text
             container.empty();      // Empty out all previous entries
 
@@ -109,6 +110,9 @@ function loadFeed(id, cb) {
             entries.forEach(function(entry) {
                 container.append(entryTemplate(entry));
             });
+
+            // restart inactivity interval
+            inactivity = setInterval(feedreader.cycleFeeds, 20000);
         }
 
         if (cb) {

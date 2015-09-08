@@ -133,10 +133,13 @@ $(function() {
             loadFeed(1, done);
         });
 
+        afterEach(function(done) {
+            loadFeed(0, done);
+        });
+
         it('changes content', function(done) {
             $changedContent = $('.feed .entry');
             expect($changedContent).not.toBe($content);
-            loadFeed(0, done);
             done();
         });
     });
@@ -169,6 +172,11 @@ $(function() {
             jasmine.clock().tick(40000);
             expect(specFeedreader.cycleFeeds.calls.count()).toEqual(2);
         });
+    });
+
+    // new test suite to describe transitions
+    describe('Transitions', function() {
+        //
     });
 
 }());
