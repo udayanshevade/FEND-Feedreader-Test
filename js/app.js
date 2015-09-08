@@ -7,7 +7,8 @@
  */
 
 // The names and URLs to all of the feeds we'd like available.
-var allFeeds = [
+var currentID = 0,
+    allFeeds = [
     {
         name: 'Udacity Blog',
         url: 'http://blog.udacity.com/feeds/posts/default?alt=rss'
@@ -42,6 +43,21 @@ function checkMenuVisibility(classStatus) {
         return 'closed';
     }
 }
+
+var Feedreader = function() {
+  // class for Feedreader functions
+};
+
+// cycles through available feeds
+Feedreader.prototype.cycleFeeds = function() {
+    if (currentID < allFeeds.length) {
+        currentID++;
+    }
+    else {
+        currentID = 0;
+    }
+    loadFeed(currentID);
+};
 
 /* This function starts up our application. The Google Feed
  * Reader API is loaded asynchonously and will then call this

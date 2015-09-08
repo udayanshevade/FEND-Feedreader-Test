@@ -141,4 +141,27 @@ $(function() {
         });
     });
 
+
+    // new test suite to describe what inactivity does
+    describe('Inactivity', function() {
+        var specFeedreader,
+            specInactivity;
+
+        beforeEach(function() {
+            spyOn(Feedreader.prototype, 'cycleFeeds');
+            specFeedreader = new Feedreader();
+            jasmine.clock().install();
+        })
+
+        afterEach(function() {
+            jasmine.clock().uninstall();
+        })
+
+        it('causes cycles to feed periodically', function(){
+            var specInactivity = setInterval(specFeedreader.cycleFeeds, 15000);
+            jasmine.clock().tick(40000);
+            expect(specFeedreader.cycleFeeds.calls.count()).toEqual(2);
+        });
+    })
+
 }());
