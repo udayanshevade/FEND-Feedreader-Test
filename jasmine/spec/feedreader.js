@@ -74,17 +74,17 @@ $(function() {
          /*
           * Nested test suite to check click results
           */
-        describe('once the menu icon clicked', function() {
+        describe(', once the menu icon clicked,', function() {
 
             beforeEach(function() {
                 $menuIcon.click();
             });
 
-            it('opens properly while the menu is closed', function() {
+            it('opens when it is closed', function() {
                 expect(checkMenuVisibility(isMenuHidden)).toBe('open');
             });
 
-            it('closes properly while the menu is open', function() {
+            it('closes when it is open', function() {
                 expect(checkMenuVisibility(isMenuHidden)).toBe('closed');
             });
         });
@@ -104,7 +104,7 @@ $(function() {
          */
 
         beforeEach(function(done) {
-            loadFeed(0, done);
+            feedreader.loadFeed(0, done);
         });
 
         // checks if at least 1 .entry element exists in the .feed container
@@ -113,6 +113,20 @@ $(function() {
             done();
         });
 
+
+        // checks initial status of entries
+        it('begin as unread', function(done) {
+            // read initial status of loaded feed
+            expect(allFeeds[0].entries[1].status).toBe('unread');
+            done();
+        });
+
+        // checks read status of entries
+        it('get flagged as read if clicked', function(done) {
+            $('.entry-link')[3].click();
+            expect(allFeeds[0].entries[3].status).toBe('read');
+            done();
+        });
     });
 
     /* TODO: Write a new test suite named "New Feed Selection"
@@ -128,13 +142,13 @@ $(function() {
 
         beforeEach(function(done) {
             $('.feed').empty();
-            loadFeed(0, done);
+            feedreader.loadFeed(0, done);
             $content = $('.feed .entry');
-            loadFeed(1, done);
+            feedreader.loadFeed(1, done);
         });
 
         afterEach(function(done) {
-            loadFeed(0, done);
+            feedreader.loadFeed(0, done);
         });
 
         it('changes content', function(done) {
@@ -190,7 +204,7 @@ $(function() {
             // restarts it as per the loadFeed function
             specInactivity = setInterval(specFeedreader.cycleFeeds, 15000);
             // forwards clock past original time of callback
-            jasmine.clock().tick(8000);
+            jasmine.clock().tick(10000);
             // callback should not have occurred
             expect(specFeedreader.cycleFeeds.calls.any()).toBe(false);
             // restore menu

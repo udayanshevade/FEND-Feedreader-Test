@@ -51,22 +51,22 @@ var Feedreader = function() {
 
 // cycles through available feeds
 Feedreader.prototype.cycleFeeds = function() {
-    if (currentID < allFeeds.length) {
+    if (currentID < allFeeds.length - 1) {
         currentID++;
     }
     else {
         currentID = 0;
     }
-    loadFeed(currentID);
+    this.loadFeed(currentID);
 };
 
 /* This function starts up our application. The Google Feed
  * Reader API is loaded asynchonously and will then call this
  * function when the API is loaded.
  */
-function init() {
+Feedreader.prototype.init = function() {
     // Load the first feed we've defined (index of 0).
-    loadFeed(0);
+    this.loadFeed(0);
 }
 
 /* This function performs everything necessary to load a
@@ -77,7 +77,7 @@ function init() {
  * This function all supports a callback as the second parameter
  * which will be called after everything has run successfully.
  */
-function loadFeed(id, cb) {
+Feedreader.prototype.loadFeed = function(id, cb) {
     var feedUrl = allFeeds[id].url,
         feedName = allFeeds[id].name,
         feed = new google.feeds.Feed(feedUrl);
@@ -112,6 +112,14 @@ function loadFeed(id, cb) {
                 container.append(entryTemplate(entry));
             });
 
+            if (!allFeeds[id].entries) {
+                allFeeds[id].entries = [];
+                entries.forEach(function(entry) {
+                    entry.status = 'unread';
+                    allFeeds[id].entries.push(entry);
+                });
+            }
+
             // restart inactivity interval
             inactivity = setInterval(feedreader.cycleFeeds, 20000);
         }
@@ -127,7 +135,7 @@ var feedreader = new Feedreader();
  * to call when the Feed Reader API is done loading.
  */
 google.load('feeds', '1');
-google.setOnLoadCallback(init);
+google.setOnLoadCallback(feedreader.init);
 
 /* All of this functionality is heavily reliant upon the DOM, so we
  * place our code in the $() function to ensure it doesn't execute
@@ -161,7 +169,7 @@ $(function() {
         var item = $(this);
 
         $('body').addClass('menu-hidden');
-        loadFeed(item.data('id'));
+        feedreader.loadFeed(item.data('id'));
         return false;
     });
 
@@ -171,4 +179,40 @@ $(function() {
     menuIcon.on('click', function() {
         $('body').toggleClass('menu-hidden');
     });
+
+
+    /* When an entry is clicked, set the 'unread' status
+     * equal to 'read', allowing us to keep track.
+     * Since the links are appended dynamically, use
+     * $(document).on to catch the link clicks.
+     */
+    $(document).on('click', '.entry-link', function(e) {
+        // prevent click behavior
+        e.preventDefault();
+        // cache the clicked url
+        var currentURL = this.href;
+
+        // loop through allFeeds
+        for (var i = 0, allFeedsLen = allFeeds.length; i < allFeedsLen; i++) {
+
+            // cache references
+            var currentFeed = allFeeds[i],
+                entries = currentFeed.entries;
+
+            // check if the entries have been loaded before click
+            if (entries) {
+                // loop through entries
+                for (var j = 0, entriesLen = entries.length; j < entriesLen; j++) {
+                    // find the clicked url
+                    if (entries[j].link === currentURL) {
+                        // set its status in the feeds as 'read'
+                        entries[j].status = 'read';
+                    }
+                }
+            }
+        }
+        // prevent bubbling
+        return false;
+    });
+
 }());
