@@ -171,6 +171,25 @@ $(function() {
             expect($changedContent).not.toBe($content);
             done();
         });
+
+                // back arrow loads previous feed
+        it('loads previous feed if \'back\' arrow is pressed', function(done) {
+            // simulate clicking the back arrow
+            $('#back-arrow').click();
+            $changedContent = $('.feed .entry');
+            expect($changedContent).not.toBe($content);
+            done();
+        });
+
+        // back arrow loads previous feed
+        it('loads next feed if \'next\' arrow is pressed', function(done) {
+            // simulate clicking the back arrow
+            $('#next-arrow').click();
+            $changedContent = $('.feed .entry');
+            expect($changedContent).not.toBe($content);
+            done();
+        });
+
     });
 
 
