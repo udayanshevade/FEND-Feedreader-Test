@@ -211,7 +211,7 @@ $(function() {
             // forwards clock past original time of callback
             jasmine.clock().tick(10000);
             // callback should not have occurred
-            expect(window.loadFeed.calls.any()).toBe(false);
+            expect(window.loadFeed).not.toHaveBeenCalled();
             done();
         });
     });
