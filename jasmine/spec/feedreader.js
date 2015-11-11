@@ -173,13 +173,12 @@ $(function() {
         });
     });
 
-/*
+
     // new test suite to describe what inactivity does
     describe('Inactivity', function() {
-        var $menuIcon = $('.menu-icon-link');
 
         beforeEach(function() {
-            // creates spy to track Feedreader.prototype.cycleFeeds
+            // creates spy to track loadFeed
             spyOn(window, 'loadFeed');
             // installs clock for interval testing
             jasmine.clock().install();
@@ -193,10 +192,13 @@ $(function() {
 
         // tests whether cycleFeeds gets called according to interval
         it('causes feeds to cycle periodically', function(done){
+            setInterval(function() {
+                loadFeed(0, done);
+            }, 15000);
             // just before 3 intervals
             jasmine.clock().tick(40000);
             // callback count should be 2
-            expect(window.loadFeed.calls.count()).toEqual(2);
+            expect(loadFeed.calls.count()).toEqual(2);
             done();
         });
 
@@ -214,7 +216,7 @@ $(function() {
         });
     });
 
-*/
+
 
     // new test suite to describe transitions
     describe('Transitions', function() {

@@ -110,7 +110,7 @@ function loadFeed(id, cb) {
             // clear interval to avoid repetition
             clearInterval(inactivity);
             // restart inactivity interval
-            inactivity = setInterval(cycleFeeds, 5000);
+            inactivity = setInterval(cycleFeeds, 15000);
         }
 
         if (cb) {
