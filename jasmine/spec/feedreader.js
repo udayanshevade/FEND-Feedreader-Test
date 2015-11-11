@@ -74,16 +74,18 @@ $(function() {
         /*
          * Nested test suite to check click results
          */
-        describe(', once clicked,', function() {
+        describe('once clicked', function() {
             beforeEach(function() {
                 $menuIcon.click();
             });
 
             it('opens if closed', function() {
+                // checkMenuVisibility defined in app.js
                 expect(checkMenuVisibility(isMenuHidden)).toBe('open');
             });
 
             it('closes if open', function() {
+                // returns either string based on trueness
                 expect(checkMenuVisibility(isMenuHidden)).toBe('closed');
             });
         });
