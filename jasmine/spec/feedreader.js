@@ -166,7 +166,6 @@ $(function() {
         it('changes content', function(done) {
             // look up entries again
             $changedContent = $('.feed .entry');
-            console.log($content, $changedContent);
             // check if new content does not match previous reference
             expect($changedContent).not.toBe($content);
             done();

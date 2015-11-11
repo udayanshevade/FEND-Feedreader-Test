@@ -6,6 +6,8 @@
 <font id="icomoon" horiz-adv-x="1024">
 <font-face units-per-em="1024" ascent="960" descent="-64" />
 <missing-glyph horiz-adv-x="1024" />
-<glyph unicode="&#x20;" d="" horiz-adv-x="512" />
-<glyph unicode="&#xe600;" d="M819.2 512h-614.4c-28.262 0-51.2-22.938-51.2-51.2s22.938-51.2 51.2-51.2h614.4c28.314 0 51.2 22.938 51.2 51.2s-22.886 51.2-51.2 51.2zM204.8 614.4h614.4c28.314 0 51.2 22.938 51.2 51.2s-22.886 51.2-51.2 51.2h-614.4c-28.262 0-51.2-22.938-51.2-51.2s22.938-51.2 51.2-51.2zM819.2 307.2h-614.4c-28.262 0-51.2-22.886-51.2-51.2s22.938-51.2 51.2-51.2h614.4c28.314 0 51.2 22.886 51.2 51.2s-22.886 51.2-51.2 51.2z" />
+<glyph unicode="&#x20;" horiz-adv-x="512" d="" />
+<glyph unicode="&#xe900;" glyph-name="menu" d="M64 768h896v-192h-896zM64 512h896v-192h-896zM64 256h896v-192h-896z" />
+<glyph unicode="&#xe901;" glyph-name="backward2" d="M576 800v-320l320 320v-704l-320 320v-320l-352 352z" />
+<glyph unicode="&#xe902;" glyph-name="forward3" d="M512 96v320l-320-320v704l320-320v320l352-352z" />
 </font></defs></svg>

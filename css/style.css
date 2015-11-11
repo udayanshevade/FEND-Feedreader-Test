@@ -44,9 +44,23 @@ h2 {
     padding: 0.5em 1em;
 }
 
-.icon-list {
+.icon {
     font-size: 1.5em;
     color: #FFF;
+}
+
+.icon:hover {
+    color: #eee;
+}
+
+.feed-navigation {
+    display: inline;
+    float: right;
+    padding: 0.5em 2em 0 0;
+}
+
+.nav-icon:hover {
+    cursor: pointer;
 }
 
 .menu {

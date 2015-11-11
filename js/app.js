@@ -43,7 +43,16 @@ function checkMenuVisibility(classStatus) {
 
 // cycles through available feeds
 function cycleFeeds() {
+    loadNextFeed();
+}
+
+function loadNextFeed() {
     (currentID < allFeeds.length - 1) ? currentID++ : currentID = 0;
+    loadFeed(currentID);
+}
+
+function loadPreviousFeed() {
+    (currentID > 0) ? currentID-- : currentID = allFeeds.length - 1;
     loadFeed(currentID);
 }
 
@@ -134,7 +143,9 @@ $(function() {
         feedList = $('.feed-list'),
         feedItemTemplate = Handlebars.compile($('.tpl-feed-list-item').html()),
         feedId = 0,
-        menuIcon = $('.menu-icon-link');
+        menuIcon = $('.menu-icon-link'),
+        backNav = $('#back-arrow'),
+        nextNav = $('#next-arrow');
 
     /* Loop through all of our feeds, assigning an id property to
      * each of the feeds based upon its index within the array.
@@ -168,6 +179,15 @@ $(function() {
         $('body').toggleClass('menu-hidden');
     });
 
+    /* When the navigation buttons are pressed, the corresponding
+     * feed is loaded on the page.
+     */
+    backNav.on('click', function() {
+        loadPreviousFeed();
+    });
+    nextNav.on('click', function() {
+        loadPreviousFeed();
+    });
 
     /* When an entry is clicked, set the 'unread' status
      * equal to 'read', allowing us to keep track.
