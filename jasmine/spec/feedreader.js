@@ -22,8 +22,7 @@ $(function() {
          * page?
          */
         it('are defined', function() {
-            expect(allFeeds).toBeDefined();
-            expect(allFeeds.length).not.toBe(0);
+            expect(allFeeds.length).not.toEqual(0);
         });
 
 
@@ -39,7 +38,7 @@ $(function() {
          */
          it('have non-empty names', function() {
             expect(allFeeds.every(checkName)).toBe(true);
-         })
+         });
     });
 
 
@@ -59,6 +58,7 @@ $(function() {
         beforeEach(function() {
             $body = $('body');
             $menuIcon = $('.menu-icon-link');
+            // boolean test for whether menu has hidden class
             isMenuHidden = $body.hasClass('menu-hidden');
         });
 
@@ -71,20 +71,19 @@ $(function() {
         });
 
 
-         /*
-          * Nested test suite to check click results
-          */
-        describe(', once the menu icon clicked,', function() {
-
+        /*
+         * Nested test suite to check click results
+         */
+        describe(', once clicked,', function() {
             beforeEach(function() {
                 $menuIcon.click();
             });
 
-            it('opens when it is closed', function() {
+            it('opens if closed', function() {
                 expect(checkMenuVisibility(isMenuHidden)).toBe('open');
             });
 
-            it('closes when it is open', function() {
+            it('closes if open', function() {
                 expect(checkMenuVisibility(isMenuHidden)).toBe('closed');
             });
         });
@@ -102,13 +101,16 @@ $(function() {
          * Remember, loadFeed() is asynchronous so this test wil require
          * the use of Jasmine's beforeEach and asynchronous done() function.
          */
+        var random
 
         beforeEach(function(done) {
-            feedreader.loadFeed(0, done);
+            loadFeed(0, done);
+            randomFeed = allFeeds[0];
         });
 
         // checks if at least 1 .entry element exists in the .feed container
         it('include at least one .entry element', function(done) {
+            // expect returned array of elements to be more than one
             expect($('.feed .entry').length).toBeGreaterThan(0);
             done();
         });
@@ -116,15 +118,17 @@ $(function() {
 
         // checks initial status of entries
         it('begin as unread', function(done) {
-            // read initial status of loaded feed
-            expect(allFeeds[0].entries[1].status).toBe('unread');
+            // read initial status of sample loaded feed
+            expect(randomFeed.entries[1].status).toEqual('unread');
             done();
         });
 
         // checks read status of entries
         it('get flagged as read if clicked', function(done) {
-            $('.entry-link')[3].click();
-            expect(allFeeds[0].entries[3].status).toBe('read');
+            // click chosen sample feed
+            $('.entry-link')[1].click();
+            // read status of the entry after clicked
+            expect(randomFeed.entries[1].status).toEqual('read');
             done();
         });
     });
@@ -137,80 +141,80 @@ $(function() {
          */
     describe('New Feed Selection', function() {
 
-        var $content;
-        var $changedContent;
+        var $content,
+            $changedContent;
 
+        // start with first loaded content
+        beforeAll(function(done) {
+            loadFeed(0, done);
+        });
+
+        // load new feed before each test
         beforeEach(function(done) {
-            $('.feed').empty();
-            feedreader.loadFeed(0, done);
+            // cache content of feed
             $content = $('.feed .entry');
-            feedreader.loadFeed(1, done);
+            // load next feed
+            loadFeed(1, done);
         });
 
-        afterEach(function(done) {
-            feedreader.loadFeed(0, done);
+        // reset content at the end of the test suite
+        afterAll(function(done) {
+            loadFeed(0, done);
         });
 
+        // check if loaded content is actually different
         it('changes content', function(done) {
+            // look up entries again
             $changedContent = $('.feed .entry');
+            console.log($content, $changedContent);
+            // check if new content does not match previous reference
             expect($changedContent).not.toBe($content);
             done();
         });
     });
 
-
+/*
     // new test suite to describe what inactivity does
     describe('Inactivity', function() {
-        var specFeedreader,
-            specInactivity,
-            $menuIcon = $('.menu-icon-link');
+        var $menuIcon = $('.menu-icon-link');
 
-        // sets up shared functionality between tests
         beforeEach(function() {
             // creates spy to track Feedreader.prototype.cycleFeeds
-            spyOn(Feedreader.prototype, 'cycleFeeds');
-            // instantiates new feedreader for testing
-            specFeedreader = new Feedreader();
+            spyOn(window, 'loadFeed');
             // installs clock for interval testing
             jasmine.clock().install();
-            // defines new interval
-            specInactivity = setInterval(specFeedreader.cycleFeeds, 15000);
         });
 
         // restores functionality
         afterEach(function() {
             // restores original timer functions
             jasmine.clock().uninstall();
-            // clears interval
-            clearInterval(specInactivity);
         });
 
         // tests whether cycleFeeds gets called according to interval
-        it('causes feeds to cycle periodically', function(){
+        it('causes feeds to cycle periodically', function(done){
             // just before 3 intervals
             jasmine.clock().tick(40000);
             // callback count should be 2
-            expect(specFeedreader.cycleFeeds.calls.count()).toEqual(2);
+            expect(window.loadFeed.calls.count()).toEqual(2);
+            done();
         });
 
         // tests whether interval is reset when active
-        it('resets due to activity', function() {
+        it('resets due to activity', function(done) {
             // forward mock clock to just before callback
             jasmine.clock().tick(14000);
             // simulates menu click
-            $menuIcon.click();
-            // clears mock interval
-            clearInterval(specInactivity);
-            // restarts it as per the loadFeed function
-            specInactivity = setInterval(specFeedreader.cycleFeeds, 15000);
+            $('.feed-list').click();
             // forwards clock past original time of callback
             jasmine.clock().tick(10000);
             // callback should not have occurred
-            expect(specFeedreader.cycleFeeds.calls.any()).toBe(false);
-            // restore menu
-            $menuIcon.click();
+            expect(window.loadFeed.calls.any()).toBe(false);
+            done();
         });
     });
+
+*/
 
     // new test suite to describe transitions
     describe('Transitions', function() {

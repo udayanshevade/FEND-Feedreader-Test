@@ -37,36 +37,23 @@ function checkName(element, index, array) {
 
 // returns status of menu visibility
 function checkMenuVisibility(classStatus) {
-    if (classStatus === true) {
-        return 'open';
-    }
-    else {
-        return 'closed';
-    }
+    var visibility = classStatus ? 'open' : 'closed';
+    return visibility;
 }
 
-var Feedreader = function() {
-  // class for Feedreader functions
-};
-
 // cycles through available feeds
-Feedreader.prototype.cycleFeeds = function() {
-    if (currentID < allFeeds.length - 1) {
-        currentID++;
-    }
-    else {
-        currentID = 0;
-    }
-    this.loadFeed(currentID);
-};
+function cycleFeeds() {
+    (currentID < allFeeds.length - 1) ? currentID++ : currentID = 0;
+    loadFeed(currentID);
+}
 
 /* This function starts up our application. The Google Feed
  * Reader API is loaded asynchonously and will then call this
  * function when the API is loaded.
  */
-Feedreader.prototype.init = function() {
+function init() {
     // Load the first feed we've defined (index of 0).
-    this.loadFeed(0);
+    loadFeed(0);
 }
 
 /* This function performs everything necessary to load a
@@ -77,12 +64,12 @@ Feedreader.prototype.init = function() {
  * This function all supports a callback as the second parameter
  * which will be called after everything has run successfully.
  */
-Feedreader.prototype.loadFeed = function(id, cb) {
+function loadFeed(id, cb) {
     var feedUrl = allFeeds[id].url,
         feedName = allFeeds[id].name,
         feed = new google.feeds.Feed(feedUrl);
 
-    clearInterval(inactivity);
+    currentID = id;
 
     /* Load the feed using the Google Feed Reader API.
      * Once the feed has been loaded, the callback function
@@ -120,8 +107,10 @@ Feedreader.prototype.loadFeed = function(id, cb) {
                 });
             }
 
+            // clear interval to avoid repetition
+            clearInterval(inactivity);
             // restart inactivity interval
-            inactivity = setInterval(feedreader.cycleFeeds, 20000);
+            inactivity = setInterval(cycleFeeds, 5000);
         }
 
         if (cb) {
@@ -130,12 +119,11 @@ Feedreader.prototype.loadFeed = function(id, cb) {
     });
 }
 
-var feedreader = new Feedreader();
 /* Google API: Loads the Feed Reader API and defines what function
  * to call when the Feed Reader API is done loading.
  */
 google.load('feeds', '1');
-google.setOnLoadCallback(feedreader.init);
+google.setOnLoadCallback(init);
 
 /* All of this functionality is heavily reliant upon the DOM, so we
  * place our code in the $() function to ensure it doesn't execute
@@ -169,7 +157,7 @@ $(function() {
         var item = $(this);
 
         $('body').addClass('menu-hidden');
-        feedreader.loadFeed(item.data('id'));
+        loadFeed(item.data('id'));
         return false;
     });
 
