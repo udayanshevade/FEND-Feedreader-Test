@@ -90,14 +90,15 @@ function loadFeed(id, cb) {
              * get started making the DOM manipulations required
              * to display the feed entries on screen.
              */
-            var container = $('.feed'),
-                title = $('.header-title'),
+            var $container = $('.feed'),
+                $title = $('.header-title'),
                 entries = result.feed.entries,
                 entriesLen = entries.length,
                 entryTemplate = Handlebars.compile($('.tpl-entry').html());
 
-            title.html(feedName);   // Set the header text
-            container.empty();      // Empty out all previous entries
+            $container.css('display', 'none');
+            $title.html(feedName);   // Set the header text
+            $container.empty();      // Empty out all previous entries
 
             /* Loop through the entries we just loaded via the Google
              * Feed Reader API. We'll then parse that entry against the
@@ -105,8 +106,11 @@ function loadFeed(id, cb) {
              * the resulting HTML to the list of entries on the page.
              */
             entries.forEach(function(entry) {
-                container.append(entryTemplate(entry));
+                $container.append(entryTemplate(entry));
             });
+
+            // animate the container
+            $container.show(300);
 
             if (!allFeeds[id].entries) {
                 allFeeds[id].entries = [];
@@ -119,7 +123,7 @@ function loadFeed(id, cb) {
             // clear interval to avoid repetition
             clearInterval(inactivity);
             // restart inactivity interval
-            inactivity = setInterval(cycleFeeds, 25000);
+            inactivity = setInterval(cycleFeeds, 15000);
         }
 
         if (cb) {

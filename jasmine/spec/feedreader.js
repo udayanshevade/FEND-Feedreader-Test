@@ -231,7 +231,7 @@ $(function() {
             // forwards clock past original time of callback
             jasmine.clock().tick(10000);
             // callback should not have occurred
-            expect(window.loadFeed).not.toHaveBeenCalled();
+            expect(loadFeed).not.toHaveBeenCalled();
             done();
         });
     });
@@ -240,7 +240,7 @@ $(function() {
 
     // new test suite to describe transitions
     describe('Transitions', function() {
-        //
+
     });
 
 }());
