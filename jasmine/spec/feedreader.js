@@ -144,51 +144,29 @@ $(function() {
     describe('New Feed Selection', function() {
 
         var $content,
-            $changedContent;
-
-        // start with first loaded content
-        beforeAll(function(done) {
-            loadFeed(0, done);
-        });
+            $changedContent,
+            prevContent;
 
         // load new feed before each test
         beforeEach(function(done) {
-            // cache content of feed
-            $content = $('.feed .entry');
             // load next feed
-            loadFeed(1, done);
-        });
-
-        // reset content at the end of the test suite
-        afterAll(function(done) {
-            loadFeed(0, done);
+            loadFeed(0, function() {
+                // cache content of feed
+                $content = $('.entry > h2').text();
+                done();
+            });
         });
 
         // check if loaded content is actually different
         it('changes content', function(done) {
-            // look up entries again
-            $changedContent = $('.feed .entry');
-            // check if new content does not match previous reference
-            expect($changedContent).not.toBe($content);
-            done();
-        });
-
-                // back arrow loads previous feed
-        it('loads previous feed if \'back\' arrow is pressed', function(done) {
-            // simulate clicking the back arrow
-            $('#back-arrow').click();
-            $changedContent = $('.feed .entry');
-            expect($changedContent).not.toBe($content);
-            done();
-        });
-
-        // back arrow loads previous feed
-        it('loads next feed if \'next\' arrow is pressed', function(done) {
-            // simulate clicking the back arrow
-            $('#next-arrow').click();
-            $changedContent = $('.feed .entry');
-            expect($changedContent).not.toBe($content);
-            done();
+            // load next feed
+            loadFeed(1, function() {
+                // cache content of feed
+                $changedContent = $('.entry > h2').text();
+                // check if new content does not match previous reference
+                expect($changedContent).not.toEqual($content);
+                done();
+            });
         });
 
     });
@@ -198,7 +176,6 @@ $(function() {
     describe('Inactivity', function() {
 
         beforeEach(function() {
-            clearInterval(inactivity);
             // creates spy to track loadFeed
             spyOn(window, 'loadFeed');
             // installs clock for interval testing
@@ -209,18 +186,6 @@ $(function() {
         afterEach(function() {
             // restores original timer functions
             jasmine.clock().uninstall();
-        });
-
-        // tests whether cycleFeeds gets called according to interval
-        it('causes feeds to cycle periodically', function(done) {
-            inactivity = setInterval(function() {
-                loadFeed(0, done);
-            }, 15000);
-            // just before 3 intervals
-            jasmine.clock().tick(40000);
-            // callback count should be 2
-            expect(loadFeed.calls.count()).toEqual(2);
-            done();
         });
 
     });
