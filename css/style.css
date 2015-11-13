@@ -42,6 +42,7 @@ h2 {
     top: 0;
     width: 100%;
     padding: 0.5em 1em;
+    z-index: 1;
 }
 
 .icon {
@@ -103,4 +104,8 @@ h2 {
     border-bottom: 1px solid #ddd;
     padding: 1em;
     margin: 0.5em 0;
+}
+
+.entry-link {
+    z-index: -1;
 }

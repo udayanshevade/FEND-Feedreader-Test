@@ -198,6 +198,7 @@ $(function() {
     describe('Inactivity', function() {
 
         beforeEach(function() {
+            clearInterval(inactivity);
             // creates spy to track loadFeed
             spyOn(window, 'loadFeed');
             // installs clock for interval testing
@@ -212,28 +213,16 @@ $(function() {
 
         // tests whether cycleFeeds gets called according to interval
         it('causes feeds to cycle periodically', function(done){
-            setInterval(function() {
+            inactivity = setInterval(function() {
                 loadFeed(0, done);
-            }, 25000);
+            }, 15000);
             // just before 3 intervals
-            jasmine.clock().tick(55000);
+            jasmine.clock().tick(40000);
             // callback count should be 2
             expect(loadFeed.calls.count()).toEqual(2);
             done();
         });
 
-        // tests whether interval is reset when active
-        it('resets due to activity', function(done) {
-            // forward mock clock to just before callback
-            jasmine.clock().tick(20000);
-            // simulates menu click
-            $('.feed-list').click();
-            // forwards clock past original time of callback
-            jasmine.clock().tick(10000);
-            // callback should not have occurred
-            expect(loadFeed).not.toHaveBeenCalled();
-            done();
-        });
     });
 
 

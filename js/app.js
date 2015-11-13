@@ -190,7 +190,7 @@ $(function() {
         loadPreviousFeed();
     });
     nextNav.on('click', function() {
-        loadPreviousFeed();
+        loadNextFeed();
     });
 
     /* When an entry is clicked, set the 'unread' status
