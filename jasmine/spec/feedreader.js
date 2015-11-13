@@ -212,7 +212,7 @@ $(function() {
         });
 
         // tests whether cycleFeeds gets called according to interval
-        it('causes feeds to cycle periodically', function(done){
+        it('causes feeds to cycle periodically', function(done) {
             inactivity = setInterval(function() {
                 loadFeed(0, done);
             }, 15000);
@@ -230,6 +230,15 @@ $(function() {
     // new test suite to describe transitions
     describe('Transitions', function() {
 
+        beforeEach(function(done) {
+            spyOn($.fn, 'show');
+            loadFeed(1, done);
+        });
+
+        it('are animated between changing feeds', function(done) {
+            expect($.fn.show).toHaveBeenCalled();
+            done();
+        });
     });
 
 }());

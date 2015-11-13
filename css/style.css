@@ -98,14 +98,13 @@ h2 {
 
 .feed {
     margin: 4em 0 0;
+    transform: translateZ(0);
+    will-change: transform;
+    z-index: -1;
 }
 
 .entry {
     border-bottom: 1px solid #ddd;
     padding: 1em;
     margin: 0.5em 0;
-}
-
-.entry-link {
-    z-index: -1;
 }
