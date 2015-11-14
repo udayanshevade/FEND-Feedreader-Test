@@ -284,16 +284,27 @@ $(function() {
     describe('Inactivity', function() {
 
         beforeEach(function() {
+            clearInterval(inactivity);
             // creates spy to track loadFeed
             spyOn(window, 'loadFeed');
             // installs clock for interval testing
             jasmine.clock().install();
         });
 
+        it('causes feeds to cycle', function() {
+            inactivity = setInterval(function() {
+                loadFeed(0);
+            }, 15000);
+            jasmine.clock().tick(60000);
+            expect(window.loadFeed.calls.count()).toEqual(4);
+        });
+
         // restores functionality
         afterEach(function() {
             // restores original timer functions
             jasmine.clock().uninstall();
+            clearInterval(inactivity);
+            loadFeed(0);
         });
 
     });
