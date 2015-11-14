@@ -232,7 +232,7 @@ $(function() {
         });
 
         // NESTED TEST SUITE for the arrow navigation buttons
-        describe('arrows', function(done) {
+        describe('Arrows', function(done) {
 
             /* ### ADDITIONAL TEST No. 5 ###
              * -----------------------------
@@ -354,6 +354,39 @@ $(function() {
 
             // console.log($.fn.show.calls.count());
             done();
+        });
+    });
+
+    /*
+     * 6th TEST SUITE for Favoriting
+     */
+    describe('Favorites', function() {
+        var favoritesContainer;
+        var $content;
+        var $changedContent;
+        var status;
+        var changedStatus;
+
+        beforeEach(function() {
+            favoritesContainer = $('.favorite-list');
+            $content = favoritesContainer.text();
+            status = allFeeds[0].favoriteStatus;
+        });
+
+        it('can be added with the add-favorite button', function() {
+            $('.feed-list > li:first-child > .favorite-option').click();
+            $changedContent = favoritesContainer.text();
+            expect($changedContent).not.toEqual($content);
+            changedStatus = allFeeds[0].favoriteStatus;
+            expect(changedStatus).not.toEqual(status);
+        });
+
+        it('can be removed with the remove-favorite button', function() {
+            $('.favorite-list > li:first-child > .subtract-option').click();
+            $changedContent = favoritesContainer.text();
+            expect($changedContent).not.toEqual($content);
+            changedStatus = allFeeds[0].favoriteStatus;
+            expect(changedStatus).not.toEqual(status);
         });
     });
 
