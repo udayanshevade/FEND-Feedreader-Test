@@ -7,21 +7,25 @@
  */
 
 // The names and URLs to all of the feeds we'd like available.
-var inactivity,
-    currentID = 0,
-    allFeeds = [
+var inactivity;
+var currentID = 0;
+var allFeeds = [
     {
         name: 'Udacity Blog',
-        url: 'http://blog.udacity.com/feeds/posts/default?alt=rss'
+        url: 'http://blog.udacity.com/feeds/posts/default?alt=rss',
+        favoriteStatus: 'none'
     }, {
         name: 'CSS Tricks',
-        url: 'http://css-tricks.com/feed'
+        url: 'http://css-tricks.com/feed',
+        favoriteStatus: 'none'
     }, {
         name: 'HTML5 Rocks',
-        url: 'http://feeds.feedburner.com/html5rocks'
+        url: 'http://feeds.feedburner.com/html5rocks',
+        favoriteStatus: 'none'
     }, {
         name: 'Linear Digressions',
-        url: 'http://feeds.feedburner.com/udacity-linear-digressions'
+        url: 'http://feeds.feedburner.com/udacity-linear-digressions',
+        favoriteStatus: 'none'
     }
 ];
 
@@ -122,7 +126,6 @@ function loadFeed(id, cb) {
 
             // clear interval to avoid repetition
             clearInterval(inactivity);
-            console.log(inactivity);
             // restart inactivity interval
             inactivity = setInterval(cycleFeeds, 15000);
         }
@@ -144,13 +147,17 @@ google.setOnLoadCallback(init);
  * until the DOM is ready.
  */
 $(function() {
-    var container = $('.feed'),
-        feedList = $('.feed-list'),
-        feedItemTemplate = Handlebars.compile($('.tpl-feed-list-item').html()),
-        feedId = 0,
-        menuIcon = $('.menu-icon-link'),
-        backNav = $('#back-arrow'),
-        nextNav = $('#next-arrow');
+    var container = $('.feed');
+    var feedList = $('.feed-list');
+    var favoriteList = $('.favorite-list');
+    var feedItemTemplate = Handlebars.compile($('.tpl-feed-list-item').html());
+    var feedId = 0;
+    var menuIcon = $('.menu-icon-link');
+    var backNav = $('#back-arrow');
+    var nextNav = $('#next-arrow');
+    var favoriteOption = '<i class="fa fa-plus favorite-option"></i>';
+    var subtractOption = '<i class="fa fa-times subtract-option"></i>';
+
 
     /* Loop through all of our feeds, assigning an id property to
      * each of the feeds based upon its index within the array.
@@ -161,6 +168,7 @@ $(function() {
     allFeeds.forEach(function(feed) {
         feed.id = feedId;
         feedList.append(feedItemTemplate(feed));
+        $('.feed-list > li:last-of-type').append(favoriteOption);
 
         feedId++;
     });
@@ -192,6 +200,33 @@ $(function() {
     });
     nextNav.click(function() {
         loadNextFeed();
+    });
+
+
+    /* When an add-favorites button is pressed, its associated
+     * feed is favorited.
+     */
+    $('.app-menu').on('click', '.favorite-option', function() {
+        var item = $(this);
+        var link = $(this).siblings('a');
+        var id = link.data('id');
+        var feed = allFeeds[id];
+        feed.favoriteStatus = 'favorite';
+
+        favoriteList.append(feedItemTemplate(allFeeds[id]));
+        $('.favorite-list > li:last-of-type').append(subtractOption);
+    });
+
+     /* When an subtract button is pressed, its associated
+     * feed is unfavorited.
+     */
+    $('.app-menu').on('click', '.subtract-option', function() {
+        var item = $(this);
+        var link = $(this).siblings('a');
+        var id = link.data('id');
+        var feed = allFeeds[id];
+        feed.favoriteStatus = 'none';
+        item.parent().remove();
     });
 
     /* When an entry is clicked, set the 'unread' status
