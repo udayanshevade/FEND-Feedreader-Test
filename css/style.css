@@ -45,23 +45,21 @@ h2 {
     z-index: 1;
 }
 
-.icon {
-    font-size: 1.5em;
-    color: #FFF;
+.header i {
+    padding-left: 0.5em;
+    font-size: 1.75em;
+    color: #fff;
 }
 
 .icon:hover {
     color: #eee;
+    cursor: pointer;
 }
 
 .feed-navigation {
     display: inline;
     float: right;
     padding: 0.5em 2em 0 0;
-}
-
-.nav-icon:hover {
-    cursor: pointer;
 }
 
 .app-menu {
