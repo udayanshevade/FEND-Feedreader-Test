@@ -42,18 +42,18 @@ function checkMenuVisibility(classStatus) {
 }
 
 // cycles through available feeds
-function cycleFeeds() {
-    loadNextFeed();
+function cycleFeeds(cb) {
+    loadNextFeed(cb);
 }
 
-function loadNextFeed() {
+function loadNextFeed(cb) {
     (currentID < allFeeds.length - 1) ? currentID++ : currentID = 0;
-    loadFeed(currentID);
+    loadFeed(currentID, cb);
 }
 
-function loadPreviousFeed() {
+function loadPreviousFeed(cb) {
     (currentID > 0) ? currentID-- : currentID = allFeeds.length - 1;
-    loadFeed(currentID);
+    loadFeed(currentID, cb);
 }
 
 /* This function starts up our application. The Google Feed

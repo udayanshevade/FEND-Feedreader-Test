@@ -169,6 +169,24 @@ $(function() {
             });
         });
 
+        it('loads next feed when loadNextFeed is called', function(done) {
+            // load next feed
+            loadNextFeed(function() {
+                $changedContent = $('.entry > h2').text();
+                expect($changedContent).not.toEqual($content);
+                done();
+            });
+        });
+
+        it('loads previous when loadPreviousFeed is called', function(done) {
+            // load next feed
+            loadPreviousFeed(function() {
+                $changedContent = $('.entry > h2').text();
+                expect($changedContent).not.toEqual($content);
+                done();
+            });
+        });
+
     });
 
 
