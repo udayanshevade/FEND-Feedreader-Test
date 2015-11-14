@@ -179,17 +179,17 @@ $(function() {
     /* When the menu icon is clicked on, we need to toggle a class
      * on the body to perform the hiding/showing of our menu.
      */
-    menuIcon.on('click', function() {
+    menuIcon.click(function() {
         $('body').toggleClass('menu-hidden');
     });
 
     /* When the navigation buttons are pressed, the corresponding
      * feed is loaded on the page.
      */
-    backNav.on('click', function() {
+    backNav.click(function() {
         loadPreviousFeed();
     });
-    nextNav.on('click', function() {
+    nextNav.click(function() {
         loadNextFeed();
     });
 

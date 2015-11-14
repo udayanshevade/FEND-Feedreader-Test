@@ -1,35 +1,32 @@
-/* feedreader.js
+/*
+ * feedreader.js
  *
- * This is the spec file that Jasmine will read and contains
- * all of the tests that will be run against your application.
  */
 
-/* We're placing all of our tests within the $() function,
- * since some of these tests may require DOM elements. We want
- * to ensure they don't run until the DOM is ready.
+/*
+ * Ensures that the DOM is ready at the time of testing.
  */
 $(function() {
-    /* This is our first test suite - a test suite just contains
-    * a related set of tests. This suite is all about the RSS
-    * feeds definitions, the allFeeds variable in our application.
-    */
+
+    /*
+     * 1st TEST SUITE for RSS feeds, and the allFeeds object
+     */
     describe('RSS Feeds', function() {
-        /* This is our first test - it tests to make sure that the
-         * allFeeds variable has been defined and that it is not
-         * empty. Experiment with this before you get started on
-         * the rest of this project. What happens when you change
-         * allFeeds in app.js to be an empty array and refresh the
-         * page?
-         */
+        var allFeedsLength;
+
+        // Tests length of allFeeds to be greater than 0
         it('are defined', function() {
-            expect(allFeeds.length).not.toEqual(0);
+            allFeedsLength = allFeeds.length;
+            expect(allFeedsLength).not.toEqual(0);
         });
 
 
         /* Tests each feed in the allFeeds object and ensures
-         * each has a URL defined and the URL is not empty
+         * each has a defined URL and the URL is non-empty
          */
         it('have non-empty URLs', function() {
+
+            // find checkURL() defined in app.js
             expect(allFeeds.every(checkURL)).toBe(true);
         });
 
@@ -37,6 +34,8 @@ $(function() {
          * each has a name defined and the name is not empty
          */
          it('have non-empty names', function() {
+
+            // find checkName() defined in app.js
             expect(allFeeds.every(checkName)).toBe(true);
          });
     });
@@ -45,87 +44,108 @@ $(function() {
 
 
     /*
-     * Second test suite for the menu
+     * 2nd TEST SUITE for the menu functionality
      */
     describe('The menu', function(){
+        var $body;
+        var $menuIcon;
+        var isMenuHidden;
 
-        var $body,
-            $menuIcon,
-            isMenuHidden;
 
-
-        // assigns necessary variables before each test
+        // Assigns necessary variables before each test
         beforeEach(function() {
             $body = $('body');
             $menuIcon = $('.menu-icon-link');
-            // boolean test for whether menu has hidden class
+            // boolean test for whether menu has the '.hidden' class
             isMenuHidden = $body.hasClass('menu-hidden');
         });
 
 
-        /*
-         * Checks if menu is hidden on start
-         */
+        // Checks if menu is hidden on start
         it('is hidden by default', function() {
             expect(isMenuHidden).toBe(true);
         });
 
 
         /*
-         * Nested test suite to check click results
+         * NESTED TEST SUITE to check click results
          */
         describe('once clicked', function() {
             beforeEach(function() {
+
+                // simulate menu click
                 $menuIcon.click();
             });
 
+            // Checks if the menu opens from it default closed state.
             it('opens if closed', function() {
-                // checkMenuVisibility defined in app.js
+
+                // find checkMenuVisibility() defined in app.js
                 expect(checkMenuVisibility(isMenuHidden)).toBe('open');
+
+                // console.log(checkMenuVisibility(isMenuHidden));
             });
 
+            // Checks if the menu closes from the open state.
             it('closes if open', function() {
-                // returns either string based on trueness
+
+                // returns 'open' or 'closed' based on trueness
                 expect(checkMenuVisibility(isMenuHidden)).toBe('closed');
+
+                // console.log(checkMenuVisibility(isMenuHidden));
             });
         });
 
     });
 
     /*
-     * Test suite for initial entries
+     * 3rd TEST SUITE for Initial Entries
      */
-
     describe('Initial Entries', function() {
-        /* TODO: Write a test that ensures when the loadFeed
-         * function is called and completes its work, there is at least
-         * a single .entry element within the .feed container.
-         * Remember, loadFeed() is asynchronous so this test wil require
-         * the use of Jasmine's beforeEach and asynchronous done() function.
-         */
-        var random
+        var randomFeed;
+        var entriesLength;
 
         beforeEach(function(done) {
+
+            // Loads the first feed.
             loadFeed(0, done);
+
+            // Selects its data from the allFeeds object.
             randomFeed = allFeeds[0];
         });
 
-        // checks if at least 1 .entry element exists in the .feed container
+        /* Checks that execution and completion of loadFeed
+         * creates at least one '.entry' element in the '.feed' container.
+         */
         it('include at least one .entry element', function(done) {
-            // expect returned array of elements to be more than one
-            expect($('.feed .entry').length).toBeGreaterThan(0);
+
+            // Stores the length of entries returned by jQuery.
+            entriesLength = $('.feed .entry').length;
+
+            // Expects its length to be greater than 0.
+            expect(entriesLength).toBeGreaterThan(0);
+
+            // console.log(entriesLength);
+
             done();
         });
 
 
-        // checks initial status of entries
+        /* ### ADDITIONAL TEST No. 1 ###
+         * -----------------------------
+         * Checks the initial read/unread status of entries.
+         */
         it('begin as unread', function(done) {
-            // read initial status of sample loaded feed
+
+            // Reads the initial status of sample loaded feed.
             expect(randomFeed.entries[1].status).toEqual('unread');
             done();
         });
 
-        // checks read status of entries
+        /* ### ADDITIONAL TEST No. 2 ###
+         * -----------------------------
+         * Verifies that visited links get registered as 'read'.
+         */
         it('get flagged as read if clicked', function(done) {
             // click chosen sample feed
             $('.entry-link')[1].click();
@@ -135,54 +155,122 @@ $(function() {
         });
     });
 
-    /* TODO: Write a new test suite named "New Feed Selection"
-
-        /* TODO: Write a test that ensures when a new feed is loaded
-         * by the loadFeed function that the content actually changes.
-         * Remember, loadFeed() is asynchronous.
-         */
+    /* Checks that a new feed is loaded by loadFeed
+     * and that the content actually changes.
+     */
     describe('New Feed Selection', function() {
+        var $content;
+        var $changedContent;
+        var prevContent;
 
-        var $content,
-            $changedContent,
-            prevContent;
-
-        // load new feed before each test
         beforeEach(function(done) {
-            // load next feed
+
+            // Loads the first feed.
             loadFeed(0, function() {
-                // cache content of feed
+
+                // Sample some text from the feed
                 $content = $('.entry > h2').text();
                 done();
             });
         });
 
-        // check if loaded content is actually different
+        // Checks if the loaded content is actually different.
         it('changes content', function(done) {
-            // load next feed
+
+            // Loads the next feed.
             loadFeed(1, function() {
-                // cache content of feed
+
+                // Caches the content of the feed.
                 $changedContent = $('.entry > h2').text();
-                // check if new content does not match previous reference
+
+                // Checks if the new content matches the old.
                 expect($changedContent).not.toEqual($content);
+
+                // console.log($content + '<<<<====>>>>' $changedContent);
                 done();
             });
         });
 
+        /* ### ADDITIONAL TEST No. 3 ###
+         * -----------------------------
+         * Checks if content changes when loadNextFeed is called.
+         */
         it('loads next feed when loadNextFeed is called', function(done) {
-            // load next feed
+
+            // Loads the next feed.
             loadNextFeed(function() {
+
+                // Caches the new content.
                 $changedContent = $('.entry > h2').text();
+
+                // Compares the two samples.
                 expect($changedContent).not.toEqual($content);
+
+                // console.log($content + '<<<<====>>>>' $changedContent);
                 done();
             });
         });
 
+        /* ### ADDITIONAL TEST No. 4 ###
+         * -----------------------------
+         * Checks if content changes when loadPreviousFeed is called.
+         */
         it('loads previous when loadPreviousFeed is called', function(done) {
-            // load next feed
+
+            // Loads next feed.
             loadPreviousFeed(function() {
+
+                // Caches the new content again.
                 $changedContent = $('.entry > h2').text();
+
+                // Compares the results.
                 expect($changedContent).not.toEqual($content);
+
+                // console.log($content + '<<<<====>>>>' $changedContent);
+                done();
+            });
+        });
+
+        // NESTED TEST SUITE for the arrow navigation buttons
+        describe('arrows', function(done) {
+
+            /* ### ADDITIONAL TEST No. 5 ###
+             * -----------------------------
+             * Spies on loadNextFeed to see if clicking the #next-arrow
+             * actually triggers the requisite function.
+             */
+            it('use loadNextFeed when using next arrow', function(done) {
+
+                // Sets up the spy on window.loadNextFeed
+                spyOn(window, 'loadNextFeed');
+
+                // Simulates the #next-arrow click.
+                $('#next-arrow').click();
+
+                // Checks if window.loadNextFeed has been called.
+                expect(window.loadNextFeed).toHaveBeenCalled();
+
+                // console.log(window.loadNextFeed.calls.count());
+                done();
+            });
+
+            /* ### ADDITIONAL TEST No. 6 ###
+             * -----------------------------
+             * Spies on loadPreviousFeed to see if clicking the #back-arrow
+             * actually triggers the requisite function.
+             */
+            it('use loadPreviousFeed when using back arrow', function(done) {
+
+                // Sets up the spy on window.loadPreviousFeed
+                spyOn(window, 'loadPreviousFeed');
+
+                // Simulates the #back-arrow click.
+                $('#back-arrow').click();
+
+                // Checks if window.loadPreviousFeed has been called.
+                expect(window.loadPreviousFeed).toHaveBeenCalled();
+
+                // console.log(window.loadPreviousFeed.calls.count());
                 done();
             });
         });
@@ -190,7 +278,9 @@ $(function() {
     });
 
 
-    // new test suite to describe what inactivity does
+    /*
+     * 4th TEST SUITE for Inactivity
+     */
     describe('Inactivity', function() {
 
         beforeEach(function() {
@@ -210,16 +300,30 @@ $(function() {
 
 
 
-    // new test suite to describe transitions
+    /*
+     * 5th TEST SUITE for Transitions
+     */
     describe('Transitions', function() {
 
         beforeEach(function(done) {
+
+            // Spies on the jQuery animation fxn .show()
             spyOn($.fn, 'show');
+
+            // Loads sample feed.
             loadFeed(1, done);
         });
 
+        /* ### ADDITIONAL TEST No. 8 ###
+         * -----------------------------
+         * Verifies that $.fn.show has been called
+         */
         it('are animated between changing feeds', function(done) {
+
+            // Checks if $.fn.show has been called
             expect($.fn.show).toHaveBeenCalled();
+
+            // console.log($.fn.show.calls.count());
             done();
         });
     });
