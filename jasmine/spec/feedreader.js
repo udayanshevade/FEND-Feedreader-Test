@@ -284,24 +284,42 @@ $(function() {
     describe('Inactivity', function() {
 
         beforeEach(function() {
+
+            // Clears existing interval to prevent double calls.
             clearInterval(inactivity);
-            // creates spy to track loadFeed
+
+            // Creates spy to track loadFeed.
             spyOn(window, 'loadFeed');
-            // installs clock for interval testing
+
+            // Installs clock for interval testing.
             jasmine.clock().install();
         });
 
+
+        /* ### ADDITIONAL TEST No. 7 ###
+         * -----------------------------
+         * Spies on loadFeed to see if it cycles properly
+         * on a given fixed interval.
+         */
         it('causes feeds to cycle', function() {
+
+            // Redefines the 'inactivity' interval.
             inactivity = setInterval(function() {
                 loadFeed(0);
             }, 15000);
+
+            // Clicks mock clock ahead to 4 cycles.
             jasmine.clock().tick(60000);
+
+            // console.log(window.loadFeed.calls.count());
+
+            // Verifies that loadFeed has been called 4 times.
             expect(window.loadFeed.calls.count()).toEqual(4);
         });
 
-        // restores functionality
         afterEach(function() {
-            // restores original timer functions
+
+            // Restores original timer functions.
             jasmine.clock().uninstall();
             clearInterval(inactivity);
             loadFeed(0);
