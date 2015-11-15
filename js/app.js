@@ -155,6 +155,7 @@ $(function() {
     var menuIcon = $('.menu-icon-link');
     var backNav = $('#back-arrow');
     var nextNav = $('#next-arrow');
+    var refresh = $('#refresh');
     var favoriteOption = '<i class="fa fa-plus favorite-option"></i>';
     var subtractOption = '<i class="fa fa-times subtract-option"></i>';
 
@@ -200,6 +201,9 @@ $(function() {
     });
     nextNav.click(function() {
         loadNextFeed();
+    });
+    refresh.click(function() {
+        loadFeed(currentID);
     });
 
 

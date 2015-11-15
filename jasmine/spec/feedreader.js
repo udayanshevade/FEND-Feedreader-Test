@@ -162,6 +162,7 @@ $(function() {
         var $content;
         var $changedContent;
         var prevContent;
+        var refreshSpy;
 
         beforeEach(function(done) {
 
@@ -273,6 +274,21 @@ $(function() {
                 // console.log(window.loadPreviousFeed.calls.count());
                 done();
             });
+        });
+
+        it('reloads when the reload button is pressed', function(done) {
+
+            // Create spy for window.loadFeed
+            refreshSpy = spyOn(window, 'loadFeed');
+
+            // console.log(currentID);
+
+            // Simulate refresh click
+            $('#refresh').click();
+
+            // Checks if loadFeed has been called.
+            expect(refreshSpy.calls.mostRecent().args[0]).toEqual(0);
+            done();
         });
 
     });
