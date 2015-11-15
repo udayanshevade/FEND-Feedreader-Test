@@ -60,6 +60,8 @@ function loadPreviousFeed(cb) {
     loadFeed(currentID, cb);
 }
 
+var favoriteFeed;
+
 /* This function starts up our application. The Google Feed
  * Reader API is loaded asynchonously and will then call this
  * function when the API is loaded.
@@ -156,8 +158,17 @@ $(function() {
     var backNav = $('#back-arrow');
     var nextNav = $('#next-arrow');
     var refresh = $('#refresh');
-    var favoriteOption = '<i class="fa fa-plus favorite-option"></i>';
+    var favoriteOption = '<i class="fa fa-heart favorite-option"></i>';
     var subtractOption = '<i class="fa fa-times subtract-option"></i>';
+
+    favoriteFeed = function(feed) {
+        if (feed.favoriteStatus !== 'favorite') {
+            feed.favoriteStatus = 'favorite';
+
+            favoriteList.append(feedItemTemplate(feed));
+            $('.favorite-list > li:last-of-type').append(subtractOption);
+        }
+    };
 
 
     /* Loop through all of our feeds, assigning an id property to
@@ -215,12 +226,7 @@ $(function() {
         var link = $(this).siblings('a');
         var id = link.data('id');
         var feed = allFeeds[id];
-        if (feed.favoriteStatus !== 'favorite') {
-            feed.favoriteStatus = 'favorite';
-
-            favoriteList.append(feedItemTemplate(allFeeds[id]));
-            $('.favorite-list > li:last-of-type').append(subtractOption);
-        }
+        favoriteFeed(feed);
     });
 
      /* When an subtract button is pressed, its associated
@@ -233,6 +239,12 @@ $(function() {
         var feed = allFeeds[id];
         feed.favoriteStatus = 'none';
         item.parent().remove();
+    });
+
+    $('#add-current').click(function() {
+        var feed = allFeeds[currentID];
+
+        favoriteFeed(feed);
     });
 
     /* When an entry is clicked, set the 'unread' status

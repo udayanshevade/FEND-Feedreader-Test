@@ -384,8 +384,14 @@ $(function() {
         var changedStatus;
 
         beforeEach(function() {
+
+            // Accesses the favorites list
             favoritesContainer = $('.favorite-list');
+
+            // Looks up the favorited content.
             $content = favoritesContainer.text();
+
+            // Records the current status.
             status = allFeeds[0].favoriteStatus;
         });
 
@@ -394,32 +400,72 @@ $(function() {
             var $addFirst = $('.feed-list>li:first-child>.favorite-option');
 
             beforeEach(function() {
+                // Clicks the add-button for a sample feed.
                 $addFirst.click();
             });
 
-            // and adds a favorite feed
+            /* ### ADDITIONAL TEST No. 9 ###
+             * -----------------------------
+             * Verifies that a feed can be favorited.
+             */
             it('with the add-favorite button', function() {
+                $changedContent = favoritesContainer.text();
+
+                // Checks if favorites list has changed.
                 expect($changedContent).not.toEqual($content);
                 changedStatus = allFeeds[0].favoriteStatus;
+
+                // Checks if status of relevant feed has changed.
                 expect(changedStatus).not.toEqual(status);
             });
 
-            // but only when it isn't already favorited
+            /* ### ADDITIONAL TEST No. 10 ###
+             * -----------------------------
+             * Verifies that a feed can only be favorited once.
+             */
             it('only when they aren\'t already favorited', function() {
                 $content = favoritesContainer.text();
+
+                // Attempts favoriting the same feed again.
                 $addFirst.click();
                 $changedContent = favoritesContainer.text();
+
+                // Compares to first change in content.
                 expect($changedContent).toEqual($content);
             });
         });
 
 
-
+        /* ### ADDITIONAL TEST No. 11 ###
+         * -----------------------------
+         * Verifies that favorited feeds can be unfavorited
+         */
         it('can be removed with the remove-favorite button', function() {
-            $('.favorite-list > li:first-child > .subtract-option').click();
+
+            // Clicks the remove favorite feed button.
+            $('.favorite-list>li:first-child>.subtract-option').click();
             $changedContent = favoritesContainer.text();
+
+            // Expects favorite list to become empty.
             expect($changedContent).not.toEqual($content);
             changedStatus = allFeeds[0].favoriteStatus;
+            expect(changedStatus).not.toEqual(status);
+        });
+
+        /* ### ADDITIONAL TEST No. 12 ###
+         * -----------------------------
+         * Verifies that the add-current button works the same as
+         * the add-favorite button, but for the currently displayed feed.
+         */
+        it('can be added with the add-current button', function() {
+
+            // Clicks the add-current button.
+            $('#add-current').click();
+            $changedContent = favoritesContainer.text();
+            status = allFeeds[currentID].favoriteStatus;
+
+            // Same tests as above.
+            expect($changedContent).not.toEqual($content);
             expect(changedStatus).not.toEqual(status);
         });
     });
