@@ -243,7 +243,7 @@ $(function() {
 
     $('#add-current').click(function() {
         var feed = allFeeds[currentID];
-
+        $('body').removeClass('menu-hidden');
         favoriteFeed(feed);
     });
 

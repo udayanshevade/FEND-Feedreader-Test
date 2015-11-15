@@ -395,6 +395,10 @@ $(function() {
             status = allFeeds[0].favoriteStatus;
         });
 
+        afterAll(function() {
+            $('.favorite-list>li:first-child>.subtract-option').click();
+        })
+
         // Checks that the add favorite button works as expected
         describe('are added', function() {
             var $addFirst = $('.feed-list>li:first-child>.favorite-option');
