@@ -1,26 +1,13 @@
+# Project Overview
+
+This project uses a web-based application which reads RSS feeds. The purpose of the project is to use [Jasmine](http://jasmine.github.io/) to test the behavior of existing and future features.
+
 # Steps to access the project
 
 1. Download the repository
 2. Open index.html in a browser
 3. The Jasmine results appear at the bottom of the page
-4. Please click around and use features
-  4.5. (Default link behavior has been disabled for some of the testing. If you'd like to follow the links, please right click or open them in a new tab.)
-
-
-# Project Overview
-
-This project uses a web-based application which reads RSS feeds. The purpose of the project is to use [Jasmine](http://jasmine.github.io/) to test the behavior of existing and future features.
-
-
-# Future
-
-Some of the intended features are cosmetic at the moment, e.g. favoriting feeds only changes the front-end interface until the page is refreshed. Ideally I would like to come back and incorporate functionality to save user interaction.
-
-
-# Background
-
-1. [Raw project assets](http://github.com/udacity/frontend-nanodegree-feedreader).
-
+4. Please click around and use features. (Default link behavior has been disabled for some of the testing. If you'd like to follow the links, please right click or open them in a new tab.)
 
 # Basic tests check that
 
@@ -43,16 +30,21 @@ Some of the intended features are cosmetic at the moment, e.g. favoriting feeds 
 7. Favoriting a new feed adds it to a list of favorite feeds.
 8. Removing a feed removes it from the favorites list.
 
+# Future
+
+Some of the intended features are cosmetic at the moment, e.g. favoriting feeds only changes the front-end interface until the page is refreshed. Ideally I would like to come back and incorporate functionality to save user interaction.
+
+# Background
+
+1. [Raw project assets](http://github.com/udacity/frontend-nanodegree-feedreader).
 
 ## Why this Project?
 
 Testing is an important part of the development process and many organizations practice a standard of development known as "test-driven development". This is when developers write tests first, before they ever start developing their application. All the tests initially fail and then they start writing application code to make these tests pass.
 
-
 ## What will I learn?
 
 In this project I will explore Jasmine to write a number of tests against a pre-existing application. These will test the underlying business logic of the application as well as the event handling and DOM manipulation.
-
 
 ## How will this help my career?
 
