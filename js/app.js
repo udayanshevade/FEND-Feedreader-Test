@@ -155,6 +155,7 @@ $(function() {
     var menuIcon = $('.menu-icon-link');
     var backNav = $('#back-arrow');
     var nextNav = $('#next-arrow');
+    var refresh = $('#refresh');
     var favoriteOption = '<i class="fa fa-plus favorite-option"></i>';
     var subtractOption = '<i class="fa fa-times subtract-option"></i>';
 
@@ -201,6 +202,9 @@ $(function() {
     nextNav.click(function() {
         loadNextFeed();
     });
+    refresh.click(function() {
+        loadFeed(currentID);
+    });
 
 
     /* When an add-favorites button is pressed, its associated
@@ -211,10 +215,12 @@ $(function() {
         var link = $(this).siblings('a');
         var id = link.data('id');
         var feed = allFeeds[id];
-        feed.favoriteStatus = 'favorite';
+        if (feed.favoriteStatus !== 'favorite') {
+            feed.favoriteStatus = 'favorite';
 
-        favoriteList.append(feedItemTemplate(allFeeds[id]));
-        $('.favorite-list > li:last-of-type').append(subtractOption);
+            favoriteList.append(feedItemTemplate(allFeeds[id]));
+            $('.favorite-list > li:last-of-type').append(subtractOption);
+        }
     });
 
      /* When an subtract button is pressed, its associated

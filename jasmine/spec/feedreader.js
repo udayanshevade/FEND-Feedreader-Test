@@ -162,6 +162,7 @@ $(function() {
         var $content;
         var $changedContent;
         var prevContent;
+        var refreshSpy;
 
         beforeEach(function(done) {
 
@@ -275,6 +276,21 @@ $(function() {
             });
         });
 
+        it('reloads when the reload button is pressed', function(done) {
+
+            // Create spy for window.loadFeed
+            refreshSpy = spyOn(window, 'loadFeed');
+
+            // console.log(currentID);
+
+            // Simulate refresh click
+            $('#refresh').click();
+
+            // Checks if loadFeed has been called.
+            expect(refreshSpy.calls.mostRecent().args[0]).toEqual(0);
+            done();
+        });
+
     });
 
 
@@ -373,13 +389,31 @@ $(function() {
             status = allFeeds[0].favoriteStatus;
         });
 
-        it('can be added with the add-favorite button', function() {
-            $('.feed-list > li:first-child > .favorite-option').click();
-            $changedContent = favoritesContainer.text();
-            expect($changedContent).not.toEqual($content);
-            changedStatus = allFeeds[0].favoriteStatus;
-            expect(changedStatus).not.toEqual(status);
+        // Checks that the add favorite button works as expected
+        describe('are added', function() {
+            var $addFirst = $('.feed-list>li:first-child>.favorite-option');
+
+            beforeEach(function() {
+                $addFirst.click();
+            });
+
+            // and adds a favorite feed
+            it('with the add-favorite button', function() {
+                expect($changedContent).not.toEqual($content);
+                changedStatus = allFeeds[0].favoriteStatus;
+                expect(changedStatus).not.toEqual(status);
+            });
+
+            // but only when it isn't already favorited
+            it('only when they aren\'t already favorited', function() {
+                $content = favoritesContainer.text();
+                $addFirst.click();
+                $changedContent = favoritesContainer.text();
+                expect($changedContent).toEqual($content);
+            });
         });
+
+
 
         it('can be removed with the remove-favorite button', function() {
             $('.favorite-list > li:first-child > .subtract-option').click();
