@@ -12,10 +12,10 @@ This project uses a web-based application which reads RSS feeds. The purpose of 
 # Basic tests check that
 
 1. Each entry in allFeeds has a non-empty URL defined.
-2. Each entry has a non-empty name is also defined.
+2. Each entry has a non-empty name also defined.
 3. The menu is hidden by default.
 4. Clicking the menu icon in turn hides and shows the menu.
-5. When loadFeed() is called, >1 .entry element can be found in .feed element.
+5. When loadFeed() is called, 1+ .entry can be found in .feed container.
 6. Content changes when a new feed is loaded.
 
 
