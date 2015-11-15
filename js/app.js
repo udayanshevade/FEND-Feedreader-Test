@@ -29,22 +29,6 @@ var allFeeds = [
     }
 ];
 
-// checks every url element in allFeeds to see if it has a url
-function checkURL(element, index, array) {
-    return (typeof element['url'] === 'string' && element != '');
-}
-
-// checks every name element in allFeeds to see if it has a name
-function checkName(element, index, array) {
-    return (typeof element['name'] === 'string' && element != '');
-}
-
-// returns status of menu visibility
-function checkMenuVisibility(classStatus) {
-    var visibility = classStatus ? 'open' : 'closed';
-    return visibility;
-}
-
 // cycles through available feeds
 function cycleFeeds(cb) {
     loadNextFeed(cb);

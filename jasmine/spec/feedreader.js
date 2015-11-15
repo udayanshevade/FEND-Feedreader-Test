@@ -14,6 +14,16 @@ $(function() {
     describe('RSS Feeds', function() {
         var allFeedsLength;
 
+        // helper fn to check every url in allFeeds
+        function checkURL(element, index, array) {
+            return (typeof element.url === 'string' && element !== '');
+        }
+
+        // checks every name element in allFeeds to see if it has a name
+        function checkName(element, index, array) {
+            return (typeof element.name === 'string' && element !== '');
+        }
+
         // Tests length of allFeeds to be greater than 0
         it('are defined', function() {
             allFeedsLength = allFeeds.length;
@@ -71,6 +81,12 @@ $(function() {
          * NESTED TEST SUITE to check click results
          */
         describe('once clicked', function() {
+            // returns status of menu visibility
+            function checkMenuVisibility(classStatus) {
+                var visibility = classStatus ? 'open' : 'closed';
+                return visibility;
+            }
+
             beforeEach(function() {
 
                 // simulate menu click
@@ -397,7 +413,7 @@ $(function() {
 
         afterAll(function() {
             $('.favorite-list>li:first-child>.subtract-option').click();
-        })
+        });
 
         // Checks that the add favorite button works as expected
         describe('are added', function() {
